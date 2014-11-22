@@ -74,12 +74,12 @@ To run commands in your master container use the `docker exec` command. (This ne
 
 For example:
 ```
-docker exec salt-master "salt '*' test.ping"
+docker exec -t salt-master "salt '*' test.ping"
 ```
 
 ### Accepting new minions
 
 To accept a new minion run the following command (replace `<minion_id>` with the actual id):
 ```
-docker exec salt-master salt-key -y -a <minion_id>
+docker exec -t salt-master salt-key -a <minion_id>
 ```

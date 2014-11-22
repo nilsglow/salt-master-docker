@@ -13,7 +13,7 @@ docker run --rm -it asmaps/salt-master
 A more advanced configuration that mounts the volumes to a local directory and exposes the ports to the world is this:
 ```
 docker run -d -p 4505:4505 -p 4506:4506 --restart=always -v /opt/salt/pki:/etc/salt/pki -v /opt/salt/cache:/var/salt/cache
--v /opt/salt/logs:/var/logs/salt -v /srv/salt:/srv/salt -v /srv/salt/master.d:/etc/salt/master.d --name salt-master
+-v /opt/salt/log:/var/log/salt -v /srv/salt:/srv/salt -v /srv/salt/master.d:/etc/salt/master.d --name salt-master
 asmaps/salt-master
 ```
 

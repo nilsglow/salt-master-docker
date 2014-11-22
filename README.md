@@ -1,12 +1,21 @@
 # Docker Salt-Master
 
-A Docker image which allows you to run a containerised Salt-Master server.
+A Docker image which allows you to run a containerised Salt-Master server. Based on of
+[thisissoon/Docker-Salt-Master](https://github.com/thisissoon/Docker-Salt-Master)
 
 ## Running the Container
 
-You can easily run the container like so:
+For a test you can easily run the container like so:
+```
+docker run --rm -it asmaps/salt-master
+```
 
-    docker run --rm -it soon/salt-master
+A more advanced configuration that mounts the volumes to a local directory and exposes the ports to the world is this:
+```
+docker run -d -p 4505:4505 -p 4506:4506 --restart=always -v /opt/salt/pki:/etc/salt/pki -v /opt/salt/cache:/var/salt/cache
+-v /opt/salt/logs:/var/logs/salt -v /srv/salt:/srv/salt -v /srv/salt/master.d:/etc/salt/master.d --name salt-master
+asmaps/salt-master
+```
 
 ## Environment Variables
 
@@ -34,11 +43,11 @@ docker image:
 
     docker run -v /etc/salt/pki -v /var/salt/cache -v /var/logs/salt -v /etc/salt/master.d -v /srv/salt --name salt-master-data busybox true
 
-This will create a stopped container wwith the name of `salt-master-data` and
+This will create a stopped container with the name of `salt-master-data` and
 will hold our persistant salt master data. Now we just need to run our master
 container with the `--volumes-from` command:
 
-    docker run --rm -it --volume-from salt-master-data soon/salt-master
+    docker run --rm -it --name salt-master --volume-from salt-master-data asmaps/salt-master
 
 ### Sharing Local Folders
 
@@ -61,15 +70,16 @@ These ports allow minions to communicate with the Salt Master.
 
 ## Running Salt Commands
 
-Docker will hopefully soon ship with a `docker exec` command which will allow you to run commands in a running container.
-See this pull request: https://github.com/docker/docker/pull/7409.
+To run commands in your master container use the `docker exec` command. (This needs at least docker 1.3)
 
-But until then you will need to run another docker container which runs a program called `nsenter` which allows
-you to connect to running containers. Follow the instructions here: https://github.com/jpetazzo/nsenter
+For example:
+```
+docker exec salt-master "salt '*' test.ping"
+```
 
-Once installed run:
+### Accepting new minions
 
-    $ CONTAINER_ID=$(docker run -d soon/salt-master)
-    $ docker-enter $CONTAINER_ID
-    $ root@CONTAINER_ID:~# salt '*' test.ping
-    $ root@CONTAINER_ID:~# salt '*' grains.items
+To accept a new minion run the following command (replace `<minion_id>` with the actual id):
+```
+docker exec salt-master salt-key -y -a <minion_id>
+```

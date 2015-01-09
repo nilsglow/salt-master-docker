@@ -16,9 +16,14 @@ RUN apt-get install -y software-properties-common python-git
 RUN add-apt-repository -y ppa:saltstack/salt
 RUN apt-get update
 
+# Install dependencies
+
+RUN apt-get install -y python-dateutil python-pip libgit2-dev libffi-dev 
+RUN pip install apache-libcloud python-simple-hipchat boto dnspython cli53
+
 # Install Salt
 
-RUN apt-get install -y salt-master=2014.7.0+ds-2trusty1
+RUN apt-get install -y salt-master=2014.7.0+ds-2trusty1 salt-cloud
 
 # Volumes
 

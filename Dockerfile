@@ -22,7 +22,7 @@ RUN apt-get install -y salt-master=2014.7.0+ds-2trusty1
 
 # Volumes
 
-VOLUME ['/etc/salt/pki', '/var/cache/salt', '/var/log/salt', '/etc/salt/master.d', '/srv/salt']
+VOLUME ["/etc/salt/pki", "/var/cache/salt", "/var/log/salt", "/etc/salt/master.d", "/srv/salt"]
 
 # Add Run File
 

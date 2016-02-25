@@ -7,14 +7,14 @@ A Docker image which allows you to run a containerised Salt-Master server. Based
 
 For a test you can easily run the container like so:
 ```
-docker run --rm -it asmaps/salt-master
+docker run --rm -it aexea/salt-master-docker
 ```
 
 A more advanced configuration that mounts the volumes to a local directory and exposes the ports to the world is this:
 ```
 docker run -d -p 4505:4505 -p 4506:4506 --restart=always -v /opt/salt/pki:/etc/salt/pki -v /opt/salt/cache:/var/salt/cache
 -v /opt/salt/log:/var/log/salt -v /srv/salt:/srv/salt -v /srv/salt/master.d:/etc/salt/master.d --name salt-master
-asmaps/salt-master
+aexea/salt-master-docker
 ```
 
 ## Environment Variables
@@ -47,7 +47,7 @@ This will create a stopped container with the name of `salt-master-data` and
 will hold our persistant salt master data. Now we just need to run our master
 container with the `--volumes-from` command:
 
-    docker run --rm -it --name salt-master --volume-from salt-master-data asmaps/salt-master
+    docker run --rm -it --name salt-master --volume-from salt-master-data aexea/salt-master-docker
 
 ### Sharing Local Folders
 

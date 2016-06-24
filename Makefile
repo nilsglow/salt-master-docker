@@ -18,7 +18,11 @@ shell:
 	sudo docker run --rm --name $(NAME)-$(INSTANCE) -i -t $(PORTS) $(VOLUMES) $(ENV) $(NS)/$(REPO):$(VERSION) /bin/bash
 
 run:
+	echo "Note: to kill you'll need to Ctrl+Z and then issue: make kill"
 	sudo docker run --rm --name $(NAME)-$(INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS)/$(REPO):$(VERSION)
+
+kill:
+	sudo docker kill $(NAME)-$(INSTANCE)
 
 start:
 	sudo docker run -d --name $(NAME)-$(INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS)/$(REPO):$(VERSION)

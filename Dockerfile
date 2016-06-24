@@ -17,15 +17,15 @@ RUN apt-get update && apt-get install -y \
 	sudo \
 	--no-install-recommends
 
-
+ENV SALT_VERSION=2015.8.8
 # Add salt stack repository
-RUN curl -sSL "https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub" | sudo apt-key add -
-RUN sudo echo "deb http://repo.saltstack.com/apt/debian/8/amd64/latest jessie main" >> /etc/apt/sources.list.d/saltstack.list
+RUN curl -sSL "https://repo.saltstack.com/apt/debian/8/amd64/archive/$SALT_VERSION/SALTSTACK-GPG-KEY.pub" | sudo apt-key add -
+RUN sudo echo "deb http://repo.saltstack.com/apt/debian/8/amd64/archive/$SALT_VERSION jessie main" >> /etc/apt/sources.list.d/saltstack.list
 
 # Install Salt
 RUN apt-get update && apt-get install -y \
-	salt-master=2015.8.7+ds-1 \
-	salt-cloud=2015.8.7+ds-1 \
+	salt-master \
+	salt-cloud \
 	--no-install-recommends
 
 # Install further dependencies

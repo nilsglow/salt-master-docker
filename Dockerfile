@@ -51,9 +51,11 @@ RUN apt-get install -y openssh-server && \
 		echo "root:$SALT_PASSWORD" |chpasswd && \
 		sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
 		sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config && \
-		/tmp/create-user.sh &&  \
 		cat /tmp/master.api.conf >> /etc/salt/master
 
+RUN /tmp/create-user.sh &&  \
+		echo "Cmnd_Alias SALT_CMDS = /usr/bin/salt,  /usr/bin/salt-api,  /usr/bin/salt-call,  /usr/bin/salt-cloud,  /usr/bin/salt-cp,  /usr/bin/salt-key,  /usr/bin/salt-master,  /usr/bin/salt-minion,  /usr/bin/salt-run" >> /etc/sudoers && \
+		echo "remotesalt ALL= NOPASSWD: SALT_CMDS" >> /etc/sudoers
 
 # Volumes
 VOLUME ["/etc/salt/pki", "/var/cache/salt", "/var/log/salt", "/etc/salt/master.d", "/srv/salt"]
@@ -64,7 +66,7 @@ RUN chmod +x /usr/local/bin/run.sh && \
 		mkdir -p /var/log/salt && touch /var/log/salt/master
 
 # Ports
-EXPOSE 4505 4506 8000
+EXPOSE 22 4505 4506 8000
 
 # Run Command
 CMD "/usr/local/bin/run.sh"
